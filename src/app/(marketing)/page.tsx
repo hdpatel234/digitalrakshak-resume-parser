@@ -15,7 +15,7 @@ async function getPricingPlans(): Promise<PricingPlanProps[]> {
     orderBy: { price: 'asc' }
   });
 
-  return dbPlans.map((plan) => {
+  return dbPlans.map((plan: any) => {
     let description = "";
     let features: any[] = [];
 
