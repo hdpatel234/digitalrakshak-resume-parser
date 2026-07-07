@@ -1,15 +1,16 @@
-// Mock Prisma Client to prevent build errors after removing database dependencies
 const createMockModel = (mockData: Record<string, any>[] = []) => ({
-  findMany: async (): Promise<Record<string, any>[]> => mockData,
-  findUnique: async (): Promise<Record<string, any> | null> => mockData[0] || null,
-  findFirst: async (): Promise<Record<string, any> | null> => mockData[0] || null,
-  create: async (): Promise<Record<string, any>> => ({ id: "mock-id" }),
-  update: async (): Promise<Record<string, any>> => ({ id: "mock-id" }),
-  delete: async (): Promise<Record<string, any>> => ({ id: "mock-id" }),
-  count: async (): Promise<number> => mockData.length,
+  findMany: async (...args: any[]): Promise<Record<string, any>[]> => mockData,
+  findUnique: async (...args: any[]): Promise<Record<string, any> | null> => mockData[0] || null,
+  findFirst: async (...args: any[]): Promise<Record<string, any> | null> => mockData[0] || null,
+  create: async (...args: any[]): Promise<Record<string, any>> => ({ id: "mock-id" }),
+  update: async (...args: any[]): Promise<Record<string, any>> => ({ id: "mock-id" }),
+  delete: async (...args: any[]): Promise<Record<string, any>> => ({ id: "mock-id" }),
+  count: async (...args: any[]): Promise<number> => mockData.length,
 });
 
-export const prisma: any = {
+type MockModel = ReturnType<typeof createMockModel>;
+
+export const prisma: Record<string, MockModel> = {
   wallet: createMockModel([{ balance: 150 }]),
   subscription: createMockModel([{ plan: { name: "Pro Plan" }, currentPeriodEnd: new Date() }]),
   resumeUpload: createMockModel([]),

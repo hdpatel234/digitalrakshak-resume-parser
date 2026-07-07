@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,19 +42,7 @@ export function LoginForm() {
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true);
     try {
-      const res = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (res?.error) {
-        toast.error("Login failed", {
-          description: "Please check your credentials and try again.",
-        });
-        return;
-      }
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Welcome back!", {
         description: "You have been signed in successfully.",
       });

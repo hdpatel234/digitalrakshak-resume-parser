@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Menu, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,15 +20,14 @@ import { UserAvatar } from "@/components/shared/user-avatar";
 import { Logo } from "@/components/shared/logo";
 import { useSidebarStore } from "@/stores/use-sidebar-store";
 import { adminNav } from "@/data/navigation";
-import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 export function AdminTopbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { toggle } = useSidebarStore();
-  const { data: session } = useSession();
   
-  const user = session?.user || { name: "User", email: "", avatar: "", role: "admin" };
+  const user = { name: "Admin", email: "admin@example.com", avatar: "", role: "admin" };
 
   const segments = pathname.split("/").filter(Boolean);
   const breadcrumbs = segments.map((seg, i) => ({
@@ -168,7 +167,7 @@ export function AdminTopbar() {
             <DropdownMenuItem
               className="cursor-pointer text-destructive focus:text-destructive"
               onClick={() => {
-                signOut({ callbackUrl: "/" });
+                router.push("/login");
               }}
             >
               Log out

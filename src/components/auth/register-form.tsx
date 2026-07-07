@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,27 +45,7 @@ export function RegisterForm() {
   async function onSubmit(data: RegisterFormValues) {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Registration failed");
-      }
-
-      await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Account created!", {
         description: "Welcome to DigitalRakshak. Let's get started.",
       });
