@@ -1,28 +1,10 @@
-import { auth } from "@/lib/auth/auth";
-import { prisma } from "@/lib/db/prisma";
 import Link from "next/link";
 import { Wallet, Package, ArrowUpCircle, FileText, Activity } from "lucide-react";
 
-export default async function DashboardOverview() {
-  const session = await auth();
-  if (!session || !session.user) return null;
-
-  const tenantId = (session.user as any).tenantId;
-
-  // 1. Fetch Wallet Balance
-  const wallet = await prisma.wallet.findUnique({ where: { tenantId } });
-  const remainingCredits = wallet?.balance || 0;
-
-  // 2. Fetch Active Subscription
-  const subscription = await prisma.subscription.findFirst({
-    where: { tenantId, status: "ACTIVE" },
-    include: { plan: true }
-  });
-
-  // 3. Fetch Parse Stats
-  const parseCount = await prisma.resumeUpload.count({
-    where: { tenantId, status: "COMPLETED" }
-  });
+export default function DashboardOverview() {
+  const remainingCredits = 150;
+  const subscription = { plan: { name: "Pro Plan" }, currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) };
+  const parseCount = 1245;
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-8">
@@ -40,13 +22,11 @@ export default async function DashboardOverview() {
             </Link>
           </div>
           <p className="text-2xl font-bold text-foreground">
-            {subscription ? subscription.plan.name : "Free Tier"}
+            {subscription.plan.name}
           </p>
-          {subscription && (
-            <p className="text-xs text-muted-foreground mt-2">
-              Renews on {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
-            </p>
-          )}
+          <p className="text-xs text-muted-foreground mt-2">
+            Renews on {subscription.currentPeriodEnd.toLocaleDateString()}
+          </p>
         </div>
 
         {/* Remaining Credits */}

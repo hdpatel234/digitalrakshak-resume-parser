@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "next-auth/react";
 import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 import "./globals.css";
 
@@ -37,7 +36,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
-        <SessionProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -47,7 +45,6 @@ export default function RootLayout({
             {children}
             <Toaster richColors position="bottom-right" />
           </ThemeProvider>
-        </SessionProvider>
       </body>
     </html>
   );

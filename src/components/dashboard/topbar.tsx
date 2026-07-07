@@ -3,7 +3,6 @@
 import { Bell } from "lucide-react";
 import { useSidebarStore } from "@/stores/use-sidebar-store";
 import { LayoutHeader } from "@/components/ui/layout-header";
-import { useSession, signOut } from "next-auth/react";
 import { SearchBar } from "@/components/ui/search-bar";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -22,15 +21,14 @@ import { useRouter } from "next/navigation";
 
 export function Topbar() {
   const toggleCollapse = useSidebarStore((state) => state.toggleCollapse);
-  const { data: session } = useSession();
-  const user = session?.user;
+  const router = useRouter();
 
   const handleLogout = () => {
-    signOut({ callbackUrl: "/login" });
+    router.push("/login");
   };
 
   // Mock User Fallback
-  const displayUser = user || {
+  const displayUser = {
     name: "Demo User",
     email: "demo@example.com",
     avatar: "/avatars/01.png",

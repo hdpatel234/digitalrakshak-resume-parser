@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { registerSchema, type RegisterInput } from "@/schemas/auth";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { registerUser } from "@/app/actions/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -39,11 +38,8 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterInput) => {
     setIsSubmitting(true);
     try {
-      const result = await registerUser(data);
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
+      // Mock Registration
+      await new Promise(r => setTimeout(r, 1000));
       toast.success("Account created successfully! Please log in.");
       router.push("/login");
     } catch {

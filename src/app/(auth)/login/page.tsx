@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { loginSchema, type LoginInput } from "@/schemas/auth";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,29 +37,17 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginInput) => {
     setIsSubmitting(true);
     try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        toast.error("Invalid credentials.");
+      // Mock Login
+      await new Promise(r => setTimeout(r, 1000));
+      
+      toast.success("Welcome back!");
+      
+      if (data.email.includes("admin")) {
+        router.push("/admin");
       } else {
-        toast.success("Welcome back!");
-        
-        // Fetch session to determine role for routing
-        const response = await fetch('/api/auth/session');
-        const session = await response.json();
-        
-        if (session?.user?.role === 'super_admin' || session?.user?.role === 'admin') {
-          router.push("/admin");
-        } else {
-          router.push("/dashboard");
-        }
-        
-        router.refresh();
+        router.push("/dashboard");
       }
+      
     } catch {
       toast.error("Something went wrong.");
     } finally {
